@@ -1,0 +1,134 @@
+
+create database LIBRARY;
+use LIBRARY;
+create table BRANCH(BRANCH_NO INT primary key,
+             MANGER_ID  int ,
+             BRANCH_ADDRESS varchar(50),
+             CONTACT_NUMBER int NOT NULL);
+insert into BRANCH values (11,1,"Sultan Bathery",0987654321),
+                          (12,2,"Kalpetta",0987654323),
+                          (13,3,"Mananthavady",0987654324),
+                          (14,4,"Kalpetta",0987654325),
+                          (15,5,"Panamaram",0987654326),
+                          (16,6,"Meppadi",0987654327),
+                          (17,7,"Kalpetta",0987654328),
+                          (18,8,"Kalpetta",0987654329),
+                          (19,9,"Kalpetta",0987654330),
+                          (20,10,"Kalpetta",0987654331);
+                          
+ create table EMPLOYEE(EMP_ID INT primary key,
+             EMP_NAME varchar(20),
+             POSTION varchar(50),
+             SALARY int not null);
+insert into EMPLOYEE values(11, 'Mr Arun', 'Manager', 70000),
+                           (12, 'Mr Sarun', 'Asst.Manager', 60000),
+                           (13, 'Mrs Arya', 'Asst.Manager', 60000),
+                           (14, 'Mr Anoop', 'Relationship Manager', 55000),
+                           (15, 'Mr Vinu', 'Relationship Manager', 55000),
+                           (16, 'Mrs Aswathi', 'Regional Manager / Area Manager', 40000),
+                           (17, 'Mr Amal', ' Customer Service Representative ', 10000),
+                           (18, 'Mr Ajith', ' Cashier', 30000),
+                           (19, 'Mrs Archana', ' Customer Service Representative', 15000),
+                           (20, 'Mr sanu', ' Customer Service Representative', 15000);
+                                        
+create table CUSTOMER(CUSTOMER_ID int primary key,
+             CUSTOMER_NAME varchar(10),
+             CUSTOMER_ADDRESS varchar(50),
+             REG_DATE date);
+insert into CUSTOMER values (101,"Aditya","Sultan Bathery","2022-01-01"),
+                          (102,"Ananya","Kalpetta","2022-02-02"),
+                          (103,"Gokul","Mananthavady","2022-03-03"),
+                          (104,"Krishna ","Vythiri","2022-04-04"),
+                          (105,"Aishwarya","Panamaram","2022-05-05"),
+                          (106,"Meera","Meppadi","2022-06-06"),
+                          (107,"Nandana","Pulpally","2022-07-07"),
+                          (108,"Niranjan","Chundale","2022-08-08"),
+                          (109,"Tanvi","Kambalakkad","2022-09-09"),
+                          (110,"Rhea","Tholpetty","2022-10-10");
+create table BOOK (ISBN int primary key,
+             BOOK_TITLE VARCHAR(100),
+             CATEGORY varchar(20),
+             RENTEL_PRICE INT,
+             _STATUS varchar(20),
+             AUTHOR varchar(30),
+             PUBLISHER varchar(60));    
+ insert into BOOK values( 978-0062397348,"A People's History of the United States","History",100,"yes","Howard Zinn","Harper Perennial Modern Classics"),
+                        (978-0451524935,"1984"," Dystopian Fiction",100,"yes","George Orwell","Secker & Warburg"), 
+                        (978-0743273565,"The Great Gatsby","Fiction",150,"No"," F. Scott Fitzgerald"," Charles Scribner's Sons"),
+                        (978-0486284736,"Pride and Prejudice","ClassicFiction",110,"yes","Jane Austen"," T. Egerton, Whitehall"),
+                        (978-0544003415,"The Lord of the Rings","Fantasy",200,"yes","J.R.R. Tolkien","George Allen & Unwin"),
+                        (978-0590353403,"Harry Potter and the Sorcerer's Stone"," Fantasy",200,"yes"," J.K. Rowling","Bloomsbury (UK), Scholastic (US)"),
+                        (978-0316769488,"The Catcher in the Rye","Fiction",100,"No","J.D. Salinger","Little, Brown and Company"),
+                        (978-0142437247, "Moby-Dick","Classic Fiction",100,"yes","Herman Melville","Harper & Brothers"),
+                        (978-0547928227,"The Hobbit","Fantasy",150,"yes","J.R.R. Tolkien","George Allen & Unwin"),
+                        (978-0064471046,"The Chronicles of Narnia: The Lion, the Witch and the Wardrobe","Fantasy",250,"yes","C.S. Lewis","Geoffrey Bles");
+                                   
+create table ISSUE_STATUS(ISSUE_ID int primary key,
+             ISSUE_CUST  int, 
+             ISSUED_BOOK_NAME varchar(100),
+             ISSUED_DATE date,
+             ISBN_BOOK int,
+             foreign key(ISSUE_CUST)references CUSTOMER(CUSTOMER_ID));
+insert into ISSUE_STATUS values(20,110,"The Chronicles of Narnia","2022-11-11", 978-0064471046),        
+			       (19,109,"The Hobbit","2022-12-11",978-0547928227),
+                               (18,108,"Moby-Dick","2022-12-11",978-0547928227),
+			       (11,106,"Harry Potter and the Sorcerer's Stone","2023-06-13",978-0590353403),
+                               (16,105,"The Lord of the Rings","2022-12-12",978-0544003415),
+                               (15,104,"Pride and Prejudice","2022-11-11",978-0486284736),
+                               (14,103,"1984","2022-11-12",978-0451524935),
+                               (12,101,"A People's History of the United States","2022-12-12",978-0061120084);   
+                               			
+create table RETURN_STATUS(RETURN_ID int primary key,
+             RETURN_CUST varchar(30),
+             RETURN_DATE date,
+             ISBN_BOOK2 int,
+             foreign key(ISBN_BOOK2)references BOOK(ISBN));
+insert into RETURN_STATUS values(21, 110,"2023-01-01",978-0064471046),
+                                (22, 106,"2023-02-02",978-0590353403),
+								(23, 103,"2023-03-03",978-0451524935);              
+
+-- 1   Retrieve the book title, category, and rental price of all available books.
+
+select BOOK_TITLE,CATEGORY,RENTEL_PRICE from BOOK where _STATUS="yes";
+
+-- 2 List the employee names and their respective salaries in descending order of salary.
+
+select EMP_NAME,POSTION from EMPLOYEE order by SALARY desc;
+             
+-- 3 Retrieve the book titles and the corresponding customers who have issued those books.
+             
+select ISSUED_BOOK_NAME,ISSUE_CUST from ISSUE_STATUS; 
+   
+-- 4 Display the total count of books in each category.
+
+select count(CATEGORY) from BOOK group by CATEGORY;
+
+-- 5 Retrieve the employee names and their positions for the employees whose salaries are above Rs.50,000.
+
+select EMP_NAME,POSTION from EMPLOYEE where SALARY > 50000;
+
+-- 6  List the customer names who registered before 2022-01-01 and have  not issued any books yet.
+
+select CUSTOMER_NAME from  CUSTOMER left join ISSUE_STATUS on CUSTOMER.CUSTOMER_ID=ISSUE_STATUS. ISSUE_CUST
+       where ISSUE_ID is null and REG_DATE<"2022-01-01";
+ 
+ -- 7. Display the branch numbers and the total count of employees in each branch.
+ 
+select BRANCH.BRANCH_NO, count(EMPLOYEE.EMP_NAME) from BRANCH left join EMPLOYEE on BRANCH.MANGER_ID=EMPLOYEE.EMP_ID group by BRANCH_NO;
+
+-- 8 Display the names of customers who have issued books in the month of June 2023.
+
+select CUSTOMER_NAME  from CUSTOMER left join ISSUE_STATUS on ISSUE_STATUS. ISSUE_CUST=CUSTOMER.CUSTOMER_ID where monthname(ISSUED_DATE)="June" and year(ISSUED_DATE)='2023';
+
+-- 9. Retrieve book_title from book table containing history.
+
+select  BOOK_TITLE from BOOK where CATEGORY="History";
+
+-- 10 Retrieve the branch numbers along with the count of employees for branches having more than 5 employees.
+
+select BRANCH_NO,count(MANGER_ID) as Count_of_Employees from Branch group by BRANCH_NO having count(MANGER_ID)>5;
+     
+
+             
+             
+             
